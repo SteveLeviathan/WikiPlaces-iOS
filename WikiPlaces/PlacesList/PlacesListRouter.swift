@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 final class PlacesListRouter: PlacesListRouting {
-    weak var interactor: PlacesListInteractor?
+    weak var interactor: PlacesListInteracting?
     private let application: UIApplicationType
 
     init(interactor: PlacesListInteractor? = nil, application: UIApplicationType = UIApplication.shared) {

@@ -1,8 +1,8 @@
 import Foundation
 
 final class PlacesListInteractor: PlacesListInteracting {
-    private let presenter: PlacesListPresenting
-    private let router: PlacesListRouting
+    var presenter: PlacesListPresenting
+    var router: PlacesListRouting
     private let apiClient: APIClientType
     private let coordinateValidator: CoordinateValidatorType
 
