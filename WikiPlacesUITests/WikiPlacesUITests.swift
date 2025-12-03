@@ -1,10 +1,3 @@
-//
-//  WikiPlacesUITests.swift
-//  WikiPlacesUITests
-//
-//  Created by Steve Overmars on 29/11/2025.
-//
-
 import XCTest
 
 final class WikiPlacesUITests: XCTestCase {
