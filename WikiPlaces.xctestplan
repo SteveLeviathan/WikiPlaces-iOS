@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "A8BC1859-699E-4BA3-A098-2A535826522D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WikiPlaces.xcodeproj",
+      "identifier" : "EA11F9D72EDB7C1600A2FE47",
+      "name" : "WikiPlaces"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:WikiPlaces.xcodeproj",
+        "identifier" : "EA11F9E42EDB7C1800A2FE47",
+        "name" : "WikiPlacesTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:WikiPlaces.xcodeproj",
+        "identifier" : "EA11F9EE2EDB7C1800A2FE47",
+        "name" : "WikiPlacesUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

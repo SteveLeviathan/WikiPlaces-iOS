@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA1125E32EE0D33000A2FE47 /* WikiPlaces.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = file; path = WikiPlaces.xctestplan; sourceTree = "<group>"; };
 		EA11F9D82EDB7C1600A2FE47 /* WikiPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA11F9E52EDB7C1800A2FE47 /* WikiPlacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WikiPlacesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA11F9EF2EDB7C1800A2FE47 /* WikiPlacesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WikiPlacesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +89,7 @@
 		EA11F9CF2EDB7C1600A2FE47 = {
 			isa = PBXGroup;
 			children = (
+				EA1125E32EE0D33000A2FE47 /* WikiPlaces.xctestplan */,
 				EA11F9DA2EDB7C1600A2FE47 /* WikiPlaces */,
 				EA11F9E82EDB7C1800A2FE47 /* WikiPlacesTests */,
 				EA11F9F22EDB7C1800A2FE47 /* WikiPlacesUITests */,
