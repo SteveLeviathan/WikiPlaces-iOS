@@ -39,9 +39,6 @@ struct APIClient: APIClientType {
             }
 
             do {
-//                if let jsonString = String(data: data, encoding: .utf8) {
-//                   print("jsonString: \(jsonString)")
-//                }
                 return try JSONDecoder().decode(T.self, from: data)
             } catch {
                 if error is DecodingError {
