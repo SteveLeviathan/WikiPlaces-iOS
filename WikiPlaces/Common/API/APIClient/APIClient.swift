@@ -1,6 +1,6 @@
 import Foundation
 
-enum ApiClientError: LocalizedError {
+enum APIClientError: LocalizedError {
     case requestError(Int)
     case decodingError(Error)
     case networkError(Error)
@@ -35,20 +35,20 @@ struct APIClient: APIClientType {
 
             if let http = response as? HTTPURLResponse,
                !(200...299).contains(http.statusCode) {
-                throw ApiClientError.requestError(http.statusCode)
+                throw APIClientError.requestError(http.statusCode)
             }
 
             do {
                 return try JSONDecoder().decode(T.self, from: data)
             } catch {
                 if error is DecodingError {
-                    throw ApiClientError.decodingError(error)
+                    throw APIClientError.decodingError(error)
                 } else {
-                    throw ApiClientError.networkError(error)
+                    throw APIClientError.networkError(error)
                 }
             }
         } catch {
-            throw ApiClientError.networkError(error)
+            throw APIClientError.networkError(error)
         }
     }
 }
