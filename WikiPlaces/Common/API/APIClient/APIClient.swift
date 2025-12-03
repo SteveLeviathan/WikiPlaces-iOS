@@ -18,7 +18,7 @@ enum ApiClientError: LocalizedError {
 }
 
 protocol APIClientType {
-    func request<T: Decodable>(_ endpoint: APIRouteType) async throws -> T
+    func request<T: Decodable>(_ apiRoute: APIRouteType) async throws -> T
 }
 
 struct APIClient: APIClientType {
@@ -28,8 +28,8 @@ struct APIClient: APIClientType {
         self.session = session
     }
 
-    func request<T>(_ endpoint: any APIRouteType) async throws -> T where T : Decodable {
-        let request = try endpoint.asURLRequest()
+    func request<T>(_ apiRoute: any APIRouteType) async throws -> T where T : Decodable {
+        let request = try apiRoute.asURLRequest()
         do {
             let (data, response) = try await session.data(for: request)
 
