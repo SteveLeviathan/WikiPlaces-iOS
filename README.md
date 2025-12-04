@@ -10,9 +10,9 @@
 
 ## Functionality
 - The main screen shows a scrollable list of places fetched from `GET https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json`
-- Tapping on a place will **deep link** into the Wikipedia app
+- Tapping on a place will **deep link** into the **Wikipedia app** if it is installed.
   - Opens the Places tab.
-  - Navigates to the place given the coordinates.
+  - Navigates to the place with its coordinates.
   - Performs a place search to show interesting spots nearby.
 - User can add a custom place to the list by providing
     - Name (optional)
@@ -52,11 +52,11 @@ The main screen can be found in the **PlacesList** folder. For a clear separatio
 The protocol oriented design enables dependency inversion and improves testability. Mocks can be easily created. Dependencies are all injected. 
 Dependencies additional to the VIP flow:
 
-- **APIClientType**: Providing an interface for an API Client
-- **APIRouteType**: Providing an interface for an API route
-- **DeepLinkType**: Providing an interface for an deep links
+- **APIClientType**: Providing an interface to an API Client
+- **APIRouteType**: Providing an interface to API routes
+- **DeepLinkType**: Providing an interface to deep links
 - **UIApplicationType**: Providing an interface to UIApplication for injection and mocking
-- **CoordinateValidatorType**: Providing an interface for a coordinate validator
+- **CoordinateValidatorType**: Providing an interface to a coordinate validator
 
 ### Extensibility
 Although this is a small app, the following have been set up to be easily extensible:
@@ -96,7 +96,7 @@ Although this is a small app, the following have been set up to be easily extens
 
 ### Deep linking
 
-The app supports a deep link to the Wikipedia iOS app. It takes these parameters:
+The app supports a deep link to the Wikipedia iOS app, into the Places screen. It takes these parameters:
 - name
 - latitude
 - longitude
