@@ -7,7 +7,7 @@ protocol UIApplicationType: AnyObject {
 }
 
 extension UIApplicationType {
-    public func open(_ url: URL) {
+    func open(_ url: URL) {
         open(url, options: [:], completionHandler: nil)
     }
 }

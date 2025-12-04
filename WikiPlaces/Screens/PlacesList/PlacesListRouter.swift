@@ -5,7 +5,7 @@ final class PlacesListRouter: PlacesListRouting {
     weak var interactor: PlacesListInteracting?
     private let application: UIApplicationType
 
-    init(interactor: PlacesListInteractor? = nil, application: UIApplicationType = UIApplication.shared) {
+    init(interactor: PlacesListInteracting? = nil, application: UIApplicationType = UIApplication.shared) {
         self.interactor = interactor
         self.application = application
     }
