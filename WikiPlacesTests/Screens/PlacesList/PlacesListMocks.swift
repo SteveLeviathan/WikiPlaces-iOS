@@ -1,6 +1,5 @@
 @testable import WikiPlaces
 
-@MainActor
 final class PlacesListInteractingMock: PlacesListInteracting {
     var presenter: PlacesListPresenting
     var router: PlacesListRouting

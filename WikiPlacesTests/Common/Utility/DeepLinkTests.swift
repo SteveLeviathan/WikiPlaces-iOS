@@ -1,7 +1,6 @@
 import XCTest
 @testable import WikiPlaces
 
-@MainActor
 final class DeepLinkTests: XCTestCase {
 
     func testWikipediaPlacesDeepLink() {

@@ -1,10 +1,8 @@
 import XCTest
 @testable import WikiPlaces
 
-@MainActor
 final class PlacesListConfiguratorTests: XCTestCase {
 
-    @MainActor
     final class PlacesListConfigurationUnwrapper {
         private let configuredView: PlacesListView
 
