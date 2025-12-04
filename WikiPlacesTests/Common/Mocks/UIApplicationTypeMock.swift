@@ -21,4 +21,3 @@ final class UIApplicationTypeMock: UIApplicationType {
         return canOpenURLURLReturnValue
     }
 }
-
