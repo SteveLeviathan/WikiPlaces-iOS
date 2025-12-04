@@ -1,6 +1,6 @@
 # WikiPlaces-iOS
 
-**WikiPlaces** is a companion app to add places and deep link into the **Wikipedia** app with its coordinates to navigate to on the Places map to see interesting spots nearby. 
+**WikiPlaces** is a companion iOS app to add places and deep link into the **Wikipedia iOS app** given the coordinates to navigate to on the Places map to see interesting spots nearby. 
 
 ## Setup
 - Clone the Git repo: `https://github.com/SteveLeviathan/WikiPlaces-iOS.git`
