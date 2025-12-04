@@ -66,3 +66,21 @@ final class PlacesListRoutingMock: PlacesListRouting {
         routeWithDeepLinkRoutingContextReceivedRoutingContext = routingContext
     }
 }
+
+final class PlacesListDisplayingMock: PlacesListDisplaying {
+    var displayPlacesViewModelCalled = false
+    var displayPlacesViewModelReceivedViewModel: PlacesList.LoadPlaces.ViewModel?
+
+    func displayPlaces(viewModel: PlacesList.LoadPlaces.ViewModel) {
+        displayPlacesViewModelCalled = true
+        displayPlacesViewModelReceivedViewModel = viewModel
+    }
+
+    var displayInvalidDeepLinkViewModelCalled = false
+    var displayInvalidDeepLinkViewModelReceivedViewModel: PlacesList.PrepareDeepLink.ViewModel?
+
+    func displayInvalidDeepLink(viewModel: PlacesList.PrepareDeepLink.ViewModel) {
+        displayInvalidDeepLinkViewModelCalled = true
+        displayInvalidDeepLinkViewModelReceivedViewModel = viewModel
+    }
+}

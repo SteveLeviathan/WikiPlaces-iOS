@@ -6,6 +6,12 @@ enum PlacesList {
         let name: String
         let latitude: Double
         let longitude: Double
+
+        static func == (lhs: Place, rhs: Place) -> Bool {
+            return lhs.name == rhs.name &&
+            lhs.latitude == rhs.latitude &&
+            lhs.longitude == rhs.longitude
+        }
     }
 
     enum LoadPlaces {
