@@ -113,6 +113,8 @@ final class CoordinateValidatorTests: XCTestCase {
         XCTAssertFalse(subject.validCoordinates(latitude: 52.37, longitude: -999))
     }
 
+    // MARK: - Decimal separator replacement
+
     func testDecimalSeparatorReplacementForBothSeparatorsSuccessful() {
         let commaLatitude = subject.isValidLatitude("12,3")
         let dotLatitude = subject.isValidLatitude("12.3")
