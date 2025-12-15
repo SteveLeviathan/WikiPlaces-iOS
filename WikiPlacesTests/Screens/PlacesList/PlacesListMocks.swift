@@ -35,8 +35,6 @@ final class PlacesListInteractingMock: PlacesListInteracting {
 }
 
 final class PlacesListPresentingMock: PlacesListPresenting {
-    var view: PlacesListDisplaying?
-
     var presentLocationsResponseCalled = false
     var presentLocationsResponseReceivedResponse: PlacesList.LoadPlaces.Response?
 
@@ -63,23 +61,5 @@ final class PlacesListRoutingMock: PlacesListRouting {
     func routeWithDeepLink(routingContext: PlacesList.PrepareDeepLink.RoutingContext) {
         routeWithDeepLinkRoutingContextCalled = true
         routeWithDeepLinkRoutingContextReceivedRoutingContext = routingContext
-    }
-}
-
-final class PlacesListDisplayingMock: PlacesListDisplaying {
-    var displayPlacesViewModelCalled = false
-    var displayPlacesViewModelReceivedViewModel: PlacesList.LoadPlaces.ViewModel?
-
-    func displayPlaces(viewModel: PlacesList.LoadPlaces.ViewModel) {
-        displayPlacesViewModelCalled = true
-        displayPlacesViewModelReceivedViewModel = viewModel
-    }
-
-    var displayInvalidDeepLinkViewModelCalled = false
-    var displayInvalidDeepLinkViewModelReceivedViewModel: PlacesList.PrepareDeepLink.ViewModel?
-
-    func displayInvalidDeepLink(viewModel: PlacesList.PrepareDeepLink.ViewModel) {
-        displayInvalidDeepLinkViewModelCalled = true
-        displayInvalidDeepLinkViewModelReceivedViewModel = viewModel
     }
 }

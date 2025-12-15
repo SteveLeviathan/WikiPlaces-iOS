@@ -6,10 +6,6 @@ final class PlacesListConfiguratorTests: XCTestCase {
     final class PlacesListConfigurationUnwrapper {
         private let configuredView: PlacesListView
 
-        var viewModel: PlacesListViewModel {
-            return configuredView.viewModel
-        }
-
         var presenter: PlacesListPresenter {
             return interactor.presenter as! PlacesListPresenter
         }
@@ -28,7 +24,6 @@ final class PlacesListConfiguratorTests: XCTestCase {
     }
 
     var configuredView: PlacesListView!
-    var viewModel: PlacesListViewModel!
     var presenter: PlacesListPresenter!
     var interactor: PlacesListInteractor!
     var router: PlacesListRouter!
@@ -38,7 +33,6 @@ final class PlacesListConfiguratorTests: XCTestCase {
         configuredView = PlacesListConfigurator().configurePlacesListView()
         let unwrapper = PlacesListConfigurationUnwrapper(configuredView: configuredView)
 
-        viewModel = unwrapper.viewModel
         presenter = unwrapper.presenter
         router = unwrapper.router
         interactor = unwrapper.interactor
@@ -46,7 +40,6 @@ final class PlacesListConfiguratorTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        viewModel = nil
         presenter = nil
         interactor = nil
         router = nil
@@ -57,6 +50,11 @@ final class PlacesListConfiguratorTests: XCTestCase {
         XCTAssertEqual(
             ObjectIdentifier(configuredView.interactor as AnyObject),
             ObjectIdentifier(interactor as AnyObject)
+        )
+
+        XCTAssertEqual(
+            ObjectIdentifier(configuredView.presenter as AnyObject),
+            ObjectIdentifier(presenter as AnyObject)
         )
     }
 
@@ -69,13 +67,6 @@ final class PlacesListConfiguratorTests: XCTestCase {
         XCTAssertEqual(
             ObjectIdentifier(interactor.router as AnyObject),
             ObjectIdentifier(router as AnyObject)
-        )
-    }
-
-    func testSettingUpPresenterDependencies() {
-        XCTAssertEqual(
-            ObjectIdentifier(presenter.view as AnyObject),
-            ObjectIdentifier(viewModel as AnyObject)
         )
     }
 }

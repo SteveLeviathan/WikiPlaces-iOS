@@ -1,58 +1,16 @@
 import SwiftUI
 
-@MainActor
-@Observable
-final class PlacesListViewModel: PlacesListDisplaying {
-    enum LoadingState {
-        case idle
-        case loading
-        case error
-    }
-
-    var loadingState: LoadingState = .idle
-
-    struct PlacesDataStore {
-        var remotePlaces: [PlacesList.Place] = []
-        var localPlaces: [PlacesList.Place] = []
-    }
-
-    var placesDataStore = PlacesDataStore()
-
-    var errorMessage: String?
-
-    var showAlert = false
-    var alertTitle = ""
-    var alertMessage = ""
-
-    func displayPlaces(viewModel: PlacesList.LoadPlaces.ViewModel) {
-        if let errorMessage = viewModel.errorMessage {
-            loadingState = .error
-            self.errorMessage = errorMessage
-            return
-        }
-
-        loadingState = .idle
-        placesDataStore.remotePlaces = viewModel.places
-    }
-
-    func displayInvalidDeepLink(viewModel: PlacesList.PrepareDeepLink.ViewModel) {
-        showAlert = true
-        alertTitle = viewModel.errorTitle
-        alertMessage = viewModel.errorMessage
-    }
-}
-
 struct PlacesListView: View {
     let interactor: PlacesListInteracting
-    @State var viewModel: PlacesListViewModel
+    @State var presenter: PlacesListPresenter
     @State private var showCustomPlaceInputSheet = false
 
     var body: some View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
-                        switch viewModel.loadingState {
+                    LazyVStack(alignment: .leading, spacing: 16) {
+                        switch presenter.loadingState {
                         case .loading:
                             ProgressView()
                         case .idle:
@@ -62,7 +20,7 @@ struct PlacesListView: View {
                             errorView
                         }
                     }.padding(16)
-                }.onChange(of: viewModel.placesDataStore.localPlaces) { _, _ in
+                }.onChange(of: presenter.placesDataStore.localPlaces) { _, _ in
                     scrollViewProxy.scrollTo("customPlacesTitle", anchor: .top)
                 }
             }
@@ -77,10 +35,10 @@ struct PlacesListView: View {
                 }
             }
         }
-        .alert(viewModel.alertTitle, isPresented: $viewModel.showAlert) {
+        .alert(presenter.alertTitle, isPresented: $presenter.showAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text(viewModel.alertMessage)
+            Text(presenter.alertMessage)
         }
         .sheet(isPresented: $showCustomPlaceInputSheet) {
             CustomPlaceInputSheet(coordinateValidator: CoordinateValidator()) { name, latitude, longitude in
@@ -89,18 +47,18 @@ struct PlacesListView: View {
                     latitude: latitude,
                     longitude: longitude)
 
-                viewModel.placesDataStore.localPlaces.insert(place, at: 0)
+                presenter.placesDataStore.localPlaces.insert(place, at: 0)
             }
         }
         .task {
-            viewModel.loadingState = .loading
+            presenter.loadingState = .loading
             await interactor.loadPlaces(request: .init())
         }
     }
 
     @ViewBuilder
     private var errorView: some View {
-        if let errorMessage = viewModel.errorMessage {
+        if let errorMessage = presenter.errorMessage {
             VStack(spacing: 24) {
                 Image(systemName: "exclamationmark.triangle")
                     .foregroundStyle(.red)
@@ -112,7 +70,7 @@ struct PlacesListView: View {
 
                 Button("Retry") {
                     Task {
-                        viewModel.loadingState = .loading
+                        presenter.loadingState = .loading
                         await interactor.loadPlaces(request: .init())
                     }
                 }
@@ -126,7 +84,7 @@ struct PlacesListView: View {
     }
 
     private var remotePlaces: some View {
-        ForEach(viewModel.placesDataStore.remotePlaces) { place in
+        ForEach(presenter.placesDataStore.remotePlaces) { place in
             PlaceView(
                 placeName: place.name,
                 latitude: place.latitude,
@@ -143,7 +101,7 @@ struct PlacesListView: View {
 
     @ViewBuilder
     private var customPlaces: some View {
-        if !viewModel.placesDataStore.localPlaces.isEmpty {
+        if !presenter.placesDataStore.localPlaces.isEmpty {
             Text("Custom places")
                 .font(.title)
                 .fontWeight(.bold)
@@ -153,7 +111,7 @@ struct PlacesListView: View {
                 .accessibilityValue("Custom places")
                 .accessibilityHint("Customly added places are listed from here onwards")
 
-            ForEach(viewModel.placesDataStore.localPlaces) { place in
+            ForEach(presenter.placesDataStore.localPlaces) { place in
                 PlaceView(
                     placeName: place.name,
                     latitude: place.latitude,

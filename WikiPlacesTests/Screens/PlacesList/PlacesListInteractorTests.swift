@@ -32,6 +32,7 @@ final class PlacesListInteractorTests: XCTestCase {
         coordinateValidatorMock = nil
     }
 
+    @MainActor
     func testLoadPlacesSuccess() async {
         // Arrange
         let expectedLocations = [
@@ -50,6 +51,7 @@ final class PlacesListInteractorTests: XCTestCase {
         XCTAssertNil(presenterMock.presentLocationsResponseReceivedResponse?.errorMessage)
     }
 
+    @MainActor
     func testLoadPlacesFailure() async throws {
         // Arrange
         apiClientMock.requestAPIRouteReturnValue = nil

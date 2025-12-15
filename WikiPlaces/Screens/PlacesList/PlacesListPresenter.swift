@@ -1,22 +1,47 @@
 import Foundation
 
 @MainActor
+@Observable
 final class PlacesListPresenter: PlacesListPresenting {
-    weak var view: PlacesListDisplaying?
+    enum LoadingState {
+        case idle
+        case loading
+        case error
+    }
+
+    var loadingState: LoadingState = .idle
+
+    struct PlacesDataStore {
+        var remotePlaces: [PlacesList.Place] = []
+        var localPlaces: [PlacesList.Place] = []
+    }
+
+    var placesDataStore = PlacesDataStore()
+
+    var errorMessage: String?
+
+    var showAlert = false
+    var alertTitle = ""
+    var alertMessage = ""
 
     func presentLocations(response: PlacesList.LoadPlaces.Response) {
         let places: [PlacesList.Place] = response.locations.map {
             PlacesList.Place(name: $0.name ?? "Unnamed place", latitude: $0.lat, longitude: $0.long)
         }
 
-        let viewModel = PlacesList.LoadPlaces.ViewModel(
-            places: places,
-            errorMessage: response.errorMessage)
+        if let errorMessage = response.errorMessage {
+            loadingState = .error
+            self.errorMessage = errorMessage
+            return
+        }
 
-        view?.displayPlaces(viewModel: viewModel)
+        loadingState = .idle
+        placesDataStore.remotePlaces = places
     }
 
     func presentDeepLinkingError(response: PlacesList.PrepareDeepLink.Response) {
-        view?.displayInvalidDeepLink(viewModel: .init(errorTitle: "Attention", errorMessage: response.errorMessage))
+        showAlert = true
+        alertTitle = "Attention"
+        alertMessage = response.errorMessage
     }
 }

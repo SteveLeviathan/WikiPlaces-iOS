@@ -5,19 +5,15 @@ import XCTest
 final class PlacesListPresenterTests: XCTestCase {
 
     var subject: PlacesListPresenter!
-    var view: PlacesListDisplayingMock!
 
     override func setUp() {
         super.setUp()
         subject = PlacesListPresenter()
-        view = PlacesListDisplayingMock()
-        subject.view = view
     }
 
     override func tearDown() {
         super.tearDown()
         subject = nil
-        view = nil
     }
 
     func testPresentLocationsWithLocations() {
@@ -38,9 +34,9 @@ final class PlacesListPresenterTests: XCTestCase {
         subject.presentLocations(response: response)
 
         // Assert
-        XCTAssertTrue(view.displayPlacesViewModelCalled)
-        XCTAssertEqual(view.displayPlacesViewModelReceivedViewModel?.places, expectedPlaces)
-        XCTAssertNil(view.displayPlacesViewModelReceivedViewModel?.errorMessage)
+        XCTAssertEqual(subject.placesDataStore.remotePlaces, expectedPlaces)
+        XCTAssertNil(subject.errorMessage)
+        XCTAssertEqual(subject.loadingState, .idle)
     }
 
     func testPresentLocationsWithErrorMessage() {
@@ -52,9 +48,9 @@ final class PlacesListPresenterTests: XCTestCase {
         subject.presentLocations(response: response)
 
         // Assert
-        XCTAssertTrue(view.displayPlacesViewModelCalled)
-        XCTAssertEqual(view.displayPlacesViewModelReceivedViewModel?.places, [])
-        XCTAssertEqual(view.displayPlacesViewModelReceivedViewModel?.errorMessage, errorMessage)
+        XCTAssertEqual(subject.placesDataStore.remotePlaces, [])
+        XCTAssertEqual(subject.errorMessage, errorMessage)
+        XCTAssertEqual(subject.loadingState, .error)
     }
 
     func testPresentDeepLinkingError() {
@@ -66,8 +62,8 @@ final class PlacesListPresenterTests: XCTestCase {
         subject.presentDeepLinkingError(response: response)
 
         // Assert
-        XCTAssertTrue(view.displayInvalidDeepLinkViewModelCalled)
-        XCTAssertEqual(view.displayInvalidDeepLinkViewModelReceivedViewModel?.errorTitle, "Attention")
-        XCTAssertEqual(view.displayInvalidDeepLinkViewModelReceivedViewModel?.errorMessage, errorMessage)
+        XCTAssertEqual(subject.alertTitle, "Attention")
+        XCTAssertEqual(subject.alertMessage, errorMessage)
+        XCTAssertTrue(subject.showAlert)
     }
 }

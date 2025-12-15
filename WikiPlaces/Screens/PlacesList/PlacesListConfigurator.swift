@@ -2,9 +2,7 @@ import Foundation
 
 struct PlacesListConfigurator: PlacesListConfiguring {
     func configurePlacesListView() -> PlacesListView {
-        let viewModel = PlacesListViewModel()
         let presenter = PlacesListPresenter()
-        presenter.view = viewModel
 
         let apiClient: APIClientType = APIClient()
         let coordinateValidator: CoordinateValidatorType = CoordinateValidator()
@@ -19,7 +17,7 @@ struct PlacesListConfigurator: PlacesListConfiguring {
 
         router.interactor = interactor
 
-        let view = PlacesListView(interactor: interactor, viewModel: viewModel)
+        let view = PlacesListView(interactor: interactor, presenter: presenter)
 
         return view
     }

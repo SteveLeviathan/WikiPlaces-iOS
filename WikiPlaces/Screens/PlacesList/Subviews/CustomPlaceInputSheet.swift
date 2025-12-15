@@ -79,12 +79,10 @@ struct CustomPlaceInputSheet: View {
         let passedLongitude = coordinateValidator.isValidLongitude(longitude)
 
         if !passedLatitude.isValid {
-            print("Invalid latitude: \(latitude)")
             errorMessages.append("Invalid latitude. Use a value between minus ninety and ninety.")
         }
 
         if !passedLongitude.isValid {
-            print("Invalid longitude: \(longitude)")
             errorMessages.append("Invalid longitude. Use a value between minus one eighty and one eighty.")
         }
 

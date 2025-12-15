@@ -4,11 +4,6 @@ protocol PlacesListConfiguring {
     func configurePlacesListView() -> PlacesListView
 }
 
-protocol PlacesListDisplaying: AnyObject {
-    func displayPlaces(viewModel: PlacesList.LoadPlaces.ViewModel)
-    func displayInvalidDeepLink(viewModel: PlacesList.PrepareDeepLink.ViewModel)
-}
-
 protocol PlacesListInteracting: AnyObject {
     var presenter: PlacesListPresenting { get set }
     var router: PlacesListRouting { get set }
@@ -19,8 +14,6 @@ protocol PlacesListInteracting: AnyObject {
 }
 
 protocol PlacesListPresenting {
-    var view: PlacesListDisplaying? { get set }
-
     func presentLocations(response: PlacesList.LoadPlaces.Response)
     func presentDeepLinkingError(response: PlacesList.PrepareDeepLink.Response)
 }
