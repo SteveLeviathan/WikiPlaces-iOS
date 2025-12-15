@@ -43,10 +43,12 @@ This WikiPlaces iOS app deep links into the Wikipedia iOS app. It depends on new
 The main screen can be found in the **PlacesList** folder. For a clear separation of concerns, the app uses the VIP architecture:
 
 - Configurator
-- View(Model)
+- View
 - Interactor
 - Presenter
 - Router
+
+Using SwiftUI, the Presenter is an Observable used by the View to update.
 
 ### Protocol oriented design
 The protocol oriented design enables dependency inversion and improves testability. Mocks can be easily created. Dependencies are all injected. 
