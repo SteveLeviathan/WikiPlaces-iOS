@@ -1,8 +1,8 @@
 @testable import WikiPlaces
 import Foundation
 
-final class CoordinateValidatorTypeMock: CoordinateValidatorType {
-    var isValidCoordinateLatitudeLongitudeCalled = false
+final class CoordinateValidatorTypeMock: @unchecked Sendable, CoordinateValidatorType {
+    private(set) var isValidCoordinateLatitudeLongitudeCalled = false
     var isValidCoordinateLatitudeLongitudeReceivedArguments: (latitude: Double, longitude: Double)?
     var isValidCoordinateLatitudeLongitudeReturnValue = false
 

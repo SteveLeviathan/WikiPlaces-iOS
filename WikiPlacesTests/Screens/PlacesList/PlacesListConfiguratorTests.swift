@@ -1,14 +1,17 @@
 import XCTest
 @testable import WikiPlaces
 
+@MainActor
 final class PlacesListConfiguratorTests: XCTestCase {
 
-    final class PlacesListConfigurationUnwrapper {
+    @MainActor
+    final class PlacesListConfigurationUnwrapper: Sendable {
         private let configuredView: PlacesListView
 
         var presenter: PlacesListPresenter {
             return interactor.presenter as! PlacesListPresenter
         }
+
 
         var interactor: PlacesListInteractor {
             return configuredView.interactor as! PlacesListInteractor
@@ -28,8 +31,8 @@ final class PlacesListConfiguratorTests: XCTestCase {
     var interactor: PlacesListInteractor!
     var router: PlacesListRouter!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         configuredView = PlacesListConfigurator().configurePlacesListView()
         let unwrapper = PlacesListConfigurationUnwrapper(configuredView: configuredView)
 
@@ -38,8 +41,8 @@ final class PlacesListConfiguratorTests: XCTestCase {
         interactor = unwrapper.interactor
     }
 
-    override func tearDown() {
-        super.tearDown()
+    override func tearDown() async throws {
+        try await super.tearDown()
         presenter = nil
         interactor = nil
         router = nil

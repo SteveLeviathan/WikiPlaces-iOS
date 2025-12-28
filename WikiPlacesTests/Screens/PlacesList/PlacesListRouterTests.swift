@@ -1,14 +1,16 @@
 import XCTest
 @testable import WikiPlaces
 
+@MainActor
 final class PlacesListRouterTests: XCTestCase {
 
     var subject: PlacesListRouter!
     var interactorMock: PlacesListInteractingMock!
     var applicationMock: UIApplicationTypeMock!
 
-    override func setUp() {
-        super.setUp()
+
+    override func setUp() async throws {
+        try await super.setUp()
         interactorMock = PlacesListInteractingMock(
             presenter: PlacesListPresentingMock(),
             router: PlacesListRoutingMock())
@@ -17,8 +19,8 @@ final class PlacesListRouterTests: XCTestCase {
         subject = PlacesListRouter(interactor: interactorMock, application: applicationMock)
     }
 
-    override func tearDown() {
-        super.tearDown()
+    override func tearDown() async throws {
+        try await super.tearDown()
         subject = nil
         interactorMock = nil
         applicationMock = nil
@@ -47,9 +49,11 @@ final class PlacesListRouterTests: XCTestCase {
 
         // Assert
         XCTAssertFalse(applicationMock.openURLOptionsCompletionHandlerCalled)
+
         XCTAssertTrue(interactorMock.handleDeepLinkingErrorResponseCalled)
-        XCTAssertEqual(
-            interactorMock.handleDeepLinkingErrorResponseReceivedResponse?.errorMessage,
+
+        let errorMessage = interactorMock.handleDeepLinkingErrorResponseReceivedResponse?.errorMessage
+        XCTAssertEqual(errorMessage,
             "Can't open invalid deep link URL!")
     }
 }

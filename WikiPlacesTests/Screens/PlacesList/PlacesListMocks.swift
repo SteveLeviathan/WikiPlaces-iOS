@@ -34,6 +34,7 @@ final class PlacesListInteractingMock: PlacesListInteracting {
     }
 }
 
+@MainActor
 final class PlacesListPresentingMock: PlacesListPresenting {
     var presentLocationsResponseCalled = false
     var presentLocationsResponseReceivedResponse: PlacesList.LoadPlaces.Response?
@@ -52,6 +53,7 @@ final class PlacesListPresentingMock: PlacesListPresenting {
     }
 }
 
+@MainActor
 final class PlacesListRoutingMock: PlacesListRouting {
     var interactor: PlacesListInteracting?
 

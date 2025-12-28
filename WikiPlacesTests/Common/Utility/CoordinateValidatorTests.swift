@@ -1,17 +1,18 @@
 import XCTest
 @testable import WikiPlaces
 
+@MainActor
 final class CoordinateValidatorTests: XCTestCase {
 
     var subject: CoordinateValidator!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         subject = CoordinateValidator()
     }
 
-    override func tearDown() {
-        super.tearDown()
+    override func tearDown() async throws {
+        try await super.tearDown()
         subject = nil
     }
 

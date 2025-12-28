@@ -6,13 +6,13 @@ final class PlacesListPresenterTests: XCTestCase {
 
     var subject: PlacesListPresenter!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         subject = PlacesListPresenter()
     }
 
-    override func tearDown() {
-        super.tearDown()
+    override func tearDown() async throws {
+        try await super.tearDown()
         subject = nil
     }
 

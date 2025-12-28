@@ -1,7 +1,7 @@
 @testable import WikiPlaces
 import Foundation
 
-final class APIClientTypeMock: APIClientType {
+final class APIClientTypeMock: @unchecked Sendable, APIClientType {
     var requestAPIRouteCalled = false
     var requestAPIRouteReceivedAPIRoute: APIRouteType?
     var requestAPIRouteReturnValue: Any?

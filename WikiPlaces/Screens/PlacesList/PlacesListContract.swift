@@ -13,12 +13,12 @@ protocol PlacesListInteracting: AnyObject {
     func handleDeepLinkingError(response: PlacesList.PrepareDeepLink.Response)
 }
 
-protocol PlacesListPresenting {
+protocol PlacesListPresenting: Sendable {
     func presentLocations(response: PlacesList.LoadPlaces.Response)
     func presentDeepLinkingError(response: PlacesList.PrepareDeepLink.Response)
 }
 
-protocol PlacesListRouting {
+protocol PlacesListRouting: Sendable {
     var interactor: PlacesListInteracting? { get set }
 
     func routeWithDeepLink(routingContext: PlacesList.PrepareDeepLink.RoutingContext)

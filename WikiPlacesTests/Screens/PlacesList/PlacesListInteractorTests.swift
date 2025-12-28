@@ -9,14 +9,14 @@ final class PlacesListInteractorTests: XCTestCase {
     var apiClientMock: APIClientTypeMock!
     var coordinateValidatorMock: CoordinateValidatorTypeMock!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         presenterMock = PlacesListPresentingMock()
-        routerMock = PlacesListRoutingMock()
+        routerMock = await PlacesListRoutingMock()
         apiClientMock = APIClientTypeMock()
         coordinateValidatorMock = CoordinateValidatorTypeMock()
 
-        subject = PlacesListInteractor(
+        subject = await PlacesListInteractor(
             presenter: presenterMock,
             router: routerMock,
             apiClient: apiClientMock,
@@ -32,7 +32,6 @@ final class PlacesListInteractorTests: XCTestCase {
         coordinateValidatorMock = nil
     }
 
-    @MainActor
     func testLoadPlacesSuccess() async {
         // Arrange
         let expectedLocations = [
@@ -46,12 +45,16 @@ final class PlacesListInteractorTests: XCTestCase {
         await subject.loadPlaces(request: .init())
 
         // Assert
-        XCTAssertTrue(presenterMock.presentLocationsResponseCalled)
-        XCTAssertEqual(presenterMock.presentLocationsResponseReceivedResponse?.locations, expectedLocations)
-        XCTAssertNil(presenterMock.presentLocationsResponseReceivedResponse?.errorMessage)
+        let presentLocationsResponseCalled = await presenterMock.presentLocationsResponseCalled
+        XCTAssertTrue(presentLocationsResponseCalled)
+
+        let locations = await presenterMock.presentLocationsResponseReceivedResponse?.locations
+        XCTAssertEqual(locations, expectedLocations)
+
+        let errorMessage = await presenterMock.presentLocationsResponseReceivedResponse?.errorMessage
+        XCTAssertNil(errorMessage)
     }
 
-    @MainActor
     func testLoadPlacesFailure() async throws {
         // Arrange
         apiClientMock.requestAPIRouteReturnValue = nil
@@ -60,48 +63,64 @@ final class PlacesListInteractorTests: XCTestCase {
         await subject.loadPlaces(request: .init())
 
         // Assert
-        XCTAssertTrue(presenterMock.presentLocationsResponseCalled)
-        XCTAssertEqual(presenterMock.presentLocationsResponseReceivedResponse?.locations, [])
-        XCTAssertNotNil(presenterMock.presentLocationsResponseReceivedResponse?.errorMessage)
+        let presentLocationsResponseCalled = await presenterMock.presentLocationsResponseCalled
+        XCTAssertTrue(presentLocationsResponseCalled)
+
+        let locations = await presenterMock.presentLocationsResponseReceivedResponse?.locations
+        XCTAssertEqual(locations, [])
+
+        let errorMessage = await presenterMock.presentLocationsResponseReceivedResponse?.errorMessage
+        XCTAssertNotNil(errorMessage)
     }
 
-    func testprepareDeepLinkWithValidCoordinates() {
+    func testprepareDeepLinkWithValidCoordinates() async {
         // Arrange
         coordinateValidatorMock.validCoordinatesLatitudeLongitudeReturnValue = true
 
         // Act
-        subject.prepareDeepLink(request: .init(name: "Test Place", latitude: 10.0, longitude: 20.0))
+        await subject.prepareDeepLink(request: .init(name: "Test Place", latitude: 10.0, longitude: 20.0))
 
         // Assert
-        XCTAssertTrue(routerMock.routeWithDeepLinkRoutingContextCalled)
-        XCTAssertFalse(presenterMock.presentDeepLinkingErrorResponseCalled)
+        let routeWithDeepLinkRoutingContextCalled = await routerMock.routeWithDeepLinkRoutingContextCalled
+        XCTAssertTrue(routeWithDeepLinkRoutingContextCalled)
 
-        let url = routerMock.routeWithDeepLinkRoutingContextReceivedRoutingContext?.url
+        let presentDeepLinkingErrorResponseCalled = await presenterMock.presentDeepLinkingErrorResponseCalled
+        XCTAssertFalse(presentDeepLinkingErrorResponseCalled)
+
+        let url = await routerMock.routeWithDeepLinkRoutingContextReceivedRoutingContext?.url
         XCTAssertEqual(url?.absoluteString, "wikipedia://places?name=Test%20Place&latitude=10.0&longitude=20.0")
     }
 
-    func testPrepareDeepLinkWithInvalidCoordinates() {
+    func testPrepareDeepLinkWithInvalidCoordinates() async {
         // Arrange
         coordinateValidatorMock.validCoordinatesLatitudeLongitudeReturnValue = false
 
         // Act
-        subject.prepareDeepLink(request: .init(name: "Test Place", latitude: 100.0, longitude: 200.0))
+        await subject.prepareDeepLink(request: .init(name: "Test Place", latitude: 100.0, longitude: 200.0))
 
         // Assert
-        XCTAssertFalse(routerMock.routeWithDeepLinkRoutingContextCalled)
-        XCTAssertTrue(presenterMock.presentDeepLinkingErrorResponseCalled)
-        XCTAssertEqual(presenterMock.presentDeepLinkingErrorResponseReceivedResponse?.errorMessage, "Unable to deep link, the coordinates are invalid.")
+        let routeWithDeepLinkRoutingContextCalled = await routerMock.routeWithDeepLinkRoutingContextCalled
+        XCTAssertFalse(routeWithDeepLinkRoutingContextCalled)
+
+        let presentDeepLinkingErrorResponseCalled = await presenterMock.presentDeepLinkingErrorResponseCalled
+        XCTAssertTrue(presentDeepLinkingErrorResponseCalled)
+
+        let errorMessage = await presenterMock.presentDeepLinkingErrorResponseReceivedResponse?.errorMessage
+        XCTAssertEqual(errorMessage, "Unable to deep link, the coordinates are invalid.")
     }
 
-    func testHandleDeepLinkingError() {
+    func testHandleDeepLinkingError() async {
         // Arrange
         let errorMessage = "deep link error"
 
         // Act
-        subject.handleDeepLinkingError(response: .init(errorMessage: errorMessage))
+        await subject.handleDeepLinkingError(response: .init(errorMessage: errorMessage))
 
         // Assert
-        XCTAssertTrue(presenterMock.presentDeepLinkingErrorResponseCalled)
-        XCTAssertEqual(presenterMock.presentDeepLinkingErrorResponseReceivedResponse?.errorMessage, errorMessage)
+        let presentDeepLinkingErrorResponseCalled = await presenterMock.presentDeepLinkingErrorResponseCalled
+        XCTAssertTrue(presentDeepLinkingErrorResponseCalled)
+
+        let errorMessageReceived = await presenterMock.presentDeepLinkingErrorResponseReceivedResponse?.errorMessage
+        XCTAssertEqual(errorMessageReceived, errorMessage)
     }
 }
